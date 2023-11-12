@@ -1,14 +1,18 @@
-import 'package:chpms/module/dashboard/views/dashboard.dart';
-import 'package:chpms/module/defaults/views/splash.dart';
+import 'package:chpms/module_admin/dashboard/views/dashboard.dart';
+import 'package:chpms/module_admin/defaults/views/splash.dart';
+import 'package:chpms/module_admin/user/views/user.dart';
 import 'package:get/get.dart';
 
-import '../module/authentication/bindings/bindings.dart';
-import '../module/authentication/views/login.dart';
-import '../module/dashboard/bindings/bindings.dart';
-import '../module/frontdesk/bindings/bindings.dart';
-import '../module/frontdesk/views/frontdesk.dart';
-import '../module/maintenance/bindings/bindings.dart';
-import '../module/maintenance/views/maintenance.dart';
+import '../module_admin/authentication/bindings/bindings.dart';
+import '../module_admin/authentication/views/login.dart';
+import '../module_admin/dashboard/bindings/bindings.dart';
+import '../module_admin/room/bindings/bindings.dart';
+import '../module_admin/room/views/room.dart';
+import '../module_admin/user/bindings/bindings.dart';
+import '../module_client/frontdesk/bindings/bindings.dart';
+import '../module_client/frontdesk/views/frontdesk.dart';
+import '../module_client/maintenance/bindings/bindings.dart';
+import '../module_client/maintenance/views/maintenance.dart';
 import 'app_routes.dart';
 
 class AppPages {
@@ -46,6 +50,18 @@ class AppPages {
       name: Routes.MAINTENANCE,
       page: () => const MaintenancePage(),
       binding: MaintenanceBinding(),
+      transition: Transition.fadeIn,
+    ),
+    GetPage(
+      name: Routes.ROOM,
+      page: () => const RoomPage(),
+      binding: RoomBinding(),
+      transition: Transition.fadeIn,
+    ),
+    GetPage(
+      name: Routes.USER,
+      page: () => const UserPage(),
+      binding: UserBinding(),
       transition: Transition.fadeIn,
     ),
   ];

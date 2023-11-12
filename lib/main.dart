@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 
-import 'module/defaults/bindings/main_binding.dart';
+import 'module_admin/defaults/bindings/main_binding.dart';
 import 'routes/app_pages.dart';
 
 void main() async {

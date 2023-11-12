@@ -1,103 +1,41 @@
 import 'dart:convert';
+import 'dart:developer';
+
+import 'package:chpms/global/gbl_fn.dart';
+import 'package:chpms/routes/app_routes.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:http/http.dart' as http;
+import 'package:get_storage/get_storage.dart';
+import 'package:dio/dio.dart' as dio;
 
-import '../../global/api_conn.dart';
+import '../../../global/api_service.dart';
 
-class UserManage extends StatefulWidget {
-  const UserManage({super.key});
+class UserController extends GetxController {
+  final storage = GetStorage();
 
-  @override
-  State<UserManage> createState() => _UserManageState();
-}
+  ApiService apiService = Get.find();
 
-class _UserManageState extends State<UserManage> {
+  late BuildContext context;
+  var isLoading = false.obs;
+  var isObscure = true.obs;
+
+  var selectedNavIndex = 0.obs;
+
+  var userNameCtrl = TextEditingController();
+  var passwordCtrl = TextEditingController();
+
+  var roleController = 'admin'.obs;
+
   var formKey = GlobalKey<FormState>();
-  var nameController = TextEditingController();
-  var passwordController = TextEditingController();
-  String roleController = 'admin';
-  var isObsecure = true.obs;
 
   @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Colors.deepPurple[400],
-        automaticallyImplyLeading: false,
-        title: const Center(
-          child: Text('User Management'),
-        ),
-      ),
-      body: Container(
-        color: Colors.lightBlue[100],
-        alignment: Alignment.center,
-        child: const Text(
-          'User Management',
-          textAlign: TextAlign.center,
-          style: TextStyle(
-            fontSize: 40,
-            fontStyle: FontStyle.italic,
-            fontWeight: FontWeight.bold,
-          ),
-        ),
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          openDialog();
-        },
-        tooltip: 'Create User',
-        child: const Icon(Icons.add),
-      ),
-    );
+  Future<void> onInit() async {
+    super.onInit();
+    debugPrint("==> LoginController");
+    loadInitialized();
   }
 
-// -------------- VALIDATE USERNAME --------------- //
-
-  validateUserName() async {
-    try {
-      var res = await http.post(
-        Uri.parse(API.userNameValidate),
-        body: {
-          'user_name': nameController.text.trim(),
-        },
-      );
-      if (res.statusCode == 200) {
-        var resBodyOfValidateUserName = jsonDecode(res.body);
-        if (resBodyOfValidateUserName['nameFound'] == true) {
-          // ignore: use_build_context_synchronously
-          showDialog(
-            context: context,
-            builder: (context) => AlertDialog(
-              title: const Text('Username Already in Use'),
-              actions: [
-                TextButton(
-                  onPressed: () {
-                    Navigator.pop(context);
-                  },
-                  child: const Text('close'),
-                ),
-              ],
-            ),
-          );
-        } else {
-          createNewUser();
-        }
-      }
-    } catch (e) {
-      print(e.toString());
-    }
-  }
-
-// ----------------- CREATE NEW USER ------------ //
-
-  createNewUser() async {
-    try {} catch (e) {
-      print(e.toString());
-    }
-  }
-
-// -------------- OPEN DIALOG ---------------- //
+  loadInitialized() async {}
 
   openDialog() {
     showDialog(
@@ -123,7 +61,7 @@ class _UserManageState extends State<UserManage> {
                   // get user name
 
                   TextFormField(
-                    controller: nameController,
+                    controller: userNameCtrl,
                     validator: (val) => val == "" ? "Field Required" : null,
                     decoration: InputDecoration(
                       prefixIcon: const Icon(Icons.person, color: Colors.black),
@@ -163,8 +101,8 @@ class _UserManageState extends State<UserManage> {
 
                   Obx(
                     () => TextFormField(
-                      controller: passwordController,
-                      obscureText: isObsecure.value,
+                      controller: passwordCtrl,
+                      obscureText: isObscure.value,
                       validator: (val) => val == ""
                           ? "please provide a password"
                           : val!.length < 8
@@ -177,10 +115,10 @@ class _UserManageState extends State<UserManage> {
                         suffixIcon: Obx(
                           () => GestureDetector(
                             onTap: () {
-                              isObsecure.value = !isObsecure.value;
+                              isObscure.value = !isObscure.value;
                             },
                             child: Icon(
-                              isObsecure.value == true
+                              isObscure.value == true
                                   ? Icons.visibility_off
                                   : Icons.visibility,
                               color: Colors.black,
@@ -218,14 +156,10 @@ class _UserManageState extends State<UserManage> {
 // ------- SELECT ROLES ------- //
                   DropdownButton<String>(
                     hint: const Text('Select Role'),
-                    value: roleController,
+                    value: roleController.value,
                     icon: const Icon(Icons.arrow_drop_down),
                     onChanged: (String? newRole) {
-                      setState(
-                        () {
-                          roleController = newRole!;
-                        },
-                      );
+                      roleController.value = newRole!;
                     },
                     items: const [
                       DropdownMenuItem<String>(
@@ -256,7 +190,7 @@ class _UserManageState extends State<UserManage> {
                 ElevatedButton(
                   onPressed: () {
                     if (formKey.currentState!.validate()) {
-                      validateUserName();
+                      createUser();
                     }
                   },
                   child: const Text('Create User'),
@@ -277,4 +211,41 @@ class _UserManageState extends State<UserManage> {
       ),
     );
   }
+
+  // User Page
+  createUser() async {
+    var response = 'error';
+    try {
+      isLoading.value = true;
+      var data = dio.FormData.fromMap({
+        'trans' : 'CREATE',
+        'user_name' : userNameCtrl.text,
+        'user_password' : passwordCtrl.text
+      });
+      var res = await apiService.postData('/login.php', data);
+      if (res.statusCode == 200) {
+        var dataObj = jsonDecode(res.data.toString());
+        if (dataObj['success'] == true) {
+          response = 'success';
+          log('login successful');
+          storage.write('userdata', dataObj['data']);
+        } 
+      }
+    } catch (e) {
+      log(e.toString());
+    } finally {
+      isLoading.value = false;
+      if(response=='error'){
+          GblFn.showSnackbar(
+              "Login failed", "Your username or password is incorrect.", 'error');
+      } else {
+        GblFn.showSnackbar(
+            "Login Success", "Welcome.", 'success');
+        Get.toNamed(Routes.DASHBOARD);
+
+      }
+    }
+  }
+
+
 }

@@ -7,4 +7,6 @@ abstract class Routes {
   static const HOME = '/home';
   static const FRONTDESK = '/frontdesk';
   static const MAINTENANCE = '/maintenance';
+  static const ROOM = '/room';
+  static const USER = '/user';
 }

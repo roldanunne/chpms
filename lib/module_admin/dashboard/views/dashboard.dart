@@ -2,8 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import '../../../routes/app_routes.dart';
-import '../../frontdesk/views/frontdesk.dart';
+import '../../../module_client/frontdesk/views/frontdesk.dart';
+import '../../../module_client/maintenance/views/maintenance.dart';
 import '../../home/views/home.dart';
+import '../../room/views/room.dart';
+import '../../user/views/user.dart';
 import '../controllers/dashboard_ctrl.dart';
 
 
@@ -17,9 +20,9 @@ class DashboardPage extends StatelessWidget {
     final List<Widget> _screens = [
       const HomePage(),
       const FrontDeskPage(),
-      // const Maintenance(),
-      // const ManageRooms(),
-      // const UserManage(),
+      const MaintenancePage(),
+      const RoomPage(),
+      const UserPage(),
     ];
 
     return Scaffold(
