@@ -1,8 +1,9 @@
-import 'package:chpms_v2_1/authentication/bindings/bindings.dart';
-import 'package:chpms_v2_1/routes/app_pages.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
+
+import 'module/defaults/bindings/main_binding.dart';
+import 'routes/app_pages.dart';
 
 void main() async {
   await GetStorage.init();
@@ -12,15 +13,18 @@ void main() async {
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({Key? key}) : super(key: key);
+  const MyApp({super.key});
 
+  
   @override
   Widget build(BuildContext context) {
     return GetMaterialApp(
-      initialBinding: LoginBinding(),
+      title: 'CHPMS',
+      initialBinding: MainBinding(),
       debugShowCheckedModeBanner: false,
       getPages: AppPages.pages,
-      // home: LoginScreen(),
+      defaultTransition: Transition.fadeIn,
+      transitionDuration: const Duration(milliseconds: 200),
     );
   }
 }

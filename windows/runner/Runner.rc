@@ -90,12 +90,12 @@ BEGIN
         BLOCK "040904e4"
         BEGIN
             VALUE "CompanyName", "com.example" "\0"
-            VALUE "FileDescription", "chpms_v2_1" "\0"
+            VALUE "FileDescription", "chpms" "\0"
             VALUE "FileVersion", VERSION_AS_STRING "\0"
-            VALUE "InternalName", "chpms_v2_1" "\0"
+            VALUE "InternalName", "chpms" "\0"
             VALUE "LegalCopyright", "Copyright (C) 2023 com.example. All rights reserved." "\0"
-            VALUE "OriginalFilename", "chpms_v2_1.exe" "\0"
-            VALUE "ProductName", "chpms_v2_1" "\0"
+            VALUE "OriginalFilename", "chpms.exe" "\0"
+            VALUE "ProductName", "chpms" "\0"
             VALUE "ProductVersion", VERSION_AS_STRING "\0"
         END
     END

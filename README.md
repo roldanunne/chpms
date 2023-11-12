@@ -1,4 +1,4 @@
-# chpms_v2_1
+# chpms
 
 A new Flutter project.
 

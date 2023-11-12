@@ -1,6 +1,6 @@
 {
-    "name": "chpms_v2_1",
-    "short_name": "chpms_v2_1",
+    "name": "chpms",
+    "short_name": "chpms",
     "start_url": ".",
     "display": "standalone",
     "background_color": "#0175C2",
