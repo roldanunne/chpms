@@ -20,8 +20,8 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return GetMaterialApp(
       title: 'CHPMS',
-      initialBinding: MainBinding(),
       debugShowCheckedModeBanner: false,
+      initialBinding: MainBinding(),
       getPages: AppPages.pages,
       defaultTransition: Transition.fadeIn,
       transitionDuration: const Duration(milliseconds: 200),

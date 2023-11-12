@@ -37,70 +37,77 @@ class UserController extends GetxController {
 
   loadInitialized() async {}
 
-  openDialog() {
-    showDialog(
-      context: context,
-      builder: (context) => AlertDialog(
-        title: const Text('Create New User'),
-        content: Column(
-          children: [
-            Padding(
-              padding: const EdgeInsets.all(15.0),
-              child: SizedBox(
-                width: 150,
-                child: Image.asset('images/PhilCST.png'),
+  openDialog() async {
+    return await Get.defaultDialog(
+        radius: 10,
+        title: 'Create New User',
+        titlePadding: EdgeInsets.all(0),
+        contentPadding: EdgeInsets.fromLTRB(20, 10, 20, 10),
+        barrierDismissible: false,
+    //     content: 
+    // showDialog(
+    //   context: context,
+    //   builder: (context) => AlertDialog(
+    //     title: const Text('Create New User'),
+        content: Obx(() =>  SizedBox(
+          width: 500,
+          child: Column(
+            children: [
+              Padding(
+                padding: const EdgeInsets.all(15.0),
+                child: SizedBox(
+                  width: 150,
+                  child: Image.asset('images/PhilCST.png'),
+                ),
               ),
-            ),
-            const SizedBox(
-              height: 30,
-            ),
-            Form(
-              key: formKey,
-              child: Column(
-                children: [
-                  // get user name
-
-                  TextFormField(
-                    controller: userNameCtrl,
-                    validator: (val) => val == "" ? "Field Required" : null,
-                    decoration: InputDecoration(
-                      prefixIcon: const Icon(Icons.person, color: Colors.black),
-                      hintText: 'name...',
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(30),
-                        borderSide: const BorderSide(
-                          color: Colors.white54,
+              const SizedBox(
+                height: 30,
+              ),
+              Form(
+                key: formKey,
+                child: Column(
+                  children: [
+                    // get user name
+                    TextFormField(
+                      controller: userNameCtrl,
+                      validator: (val) => val == "" ? "Field Required" : null,
+                      decoration: InputDecoration(
+                        prefixIcon: const Icon(Icons.person, color: Colors.black),
+                        hintText: 'name...',
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(30),
+                          borderSide: const BorderSide(
+                            color: Colors.white54,
+                          ),
                         ),
-                      ),
-                      enabledBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(30),
-                        borderSide: const BorderSide(
-                          color: Colors.white54,
+                        enabledBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(30),
+                          borderSide: const BorderSide(
+                            color: Colors.white54,
+                          ),
                         ),
-                      ),
-                      disabledBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(30),
-                        borderSide: const BorderSide(
-                          color: Colors.white54,
+                        disabledBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(30),
+                          borderSide: const BorderSide(
+                            color: Colors.white54,
+                          ),
                         ),
+                        contentPadding: const EdgeInsets.symmetric(
+                          horizontal: 14,
+                          vertical: 6,
+                        ),
+                        fillColor: Colors.white,
+                        filled: true,
                       ),
-                      contentPadding: const EdgeInsets.symmetric(
-                        horizontal: 14,
-                        vertical: 6,
-                      ),
-                      fillColor: Colors.white,
-                      filled: true,
                     ),
-                  ),
-
-                  const SizedBox(
-                    height: 17,
-                  ),
-
-                  // get password
-
-                  Obx(
-                    () => TextFormField(
+        
+                    const SizedBox(
+                      height: 17,
+                    ),
+        
+                    // get password
+        
+                    TextFormField(
                       controller: passwordCtrl,
                       obscureText: isObscure.value,
                       validator: (val) => val == ""
@@ -109,8 +116,7 @@ class UserController extends GetxController {
                               ? "use at least 8 characters for your password"
                               : null,
                       decoration: InputDecoration(
-                        prefixIcon:
-                            const Icon(Icons.vpn_key, color: Colors.black),
+                        prefixIcon: const Icon(Icons.vpn_key, color: Colors.black),
                         hintText: 'password...',
                         suffixIcon: Obx(
                           () => GestureDetector(
@@ -150,37 +156,37 @@ class UserController extends GetxController {
                         fillColor: Colors.white,
                         filled: true,
                       ),
+                    ), 
+        
+                    // ------- SELECT ROLES ------- //
+                    DropdownButton<String>(
+                      hint: const Text('Select Role'),
+                      value: roleController.value,
+                      icon: const Icon(Icons.arrow_drop_down),
+                      onChanged: (String? newRole) {
+                        roleController.value = newRole!;
+                      },
+                      items: const [
+                        DropdownMenuItem<String>(
+                          value: 'admin',
+                          child: Text('Admin'),
+                        ),
+                        DropdownMenuItem<String>(
+                          value: 'front',
+                          child: Text('Front Desk'),
+                        ),
+                        DropdownMenuItem<String>(
+                          value: 'maintenance',
+                          child: Text('Housekeeping & Maintennance'),
+                        ),
+                      ],
                     ),
-                  ),
-
-// ------- SELECT ROLES ------- //
-                  DropdownButton<String>(
-                    hint: const Text('Select Role'),
-                    value: roleController.value,
-                    icon: const Icon(Icons.arrow_drop_down),
-                    onChanged: (String? newRole) {
-                      roleController.value = newRole!;
-                    },
-                    items: const [
-                      DropdownMenuItem<String>(
-                        value: 'admin',
-                        child: Text('Admin'),
-                      ),
-                      DropdownMenuItem<String>(
-                        value: 'front',
-                        child: Text('Front Desk'),
-                      ),
-                      DropdownMenuItem<String>(
-                        value: 'maintenance',
-                        child: Text('Housekeeping & Maintennance'),
-                      ),
-                    ],
-                  ),
-                ],
-              ),
-            ),
-          ],
-        ),
+                  ],
+                ),
+              )
+            ],
+          ),
+        )),
         actions: [
           Center(
             child: Row(
@@ -200,7 +206,7 @@ class UserController extends GetxController {
                 ),
                 TextButton(
                   onPressed: () {
-                    Navigator.pop(context);
+                    Get.back();
                   },
                   child: const Text('Cancel'),
                 ),
@@ -208,42 +214,40 @@ class UserController extends GetxController {
             ),
           ),
         ],
-      ),
     );
   }
 
-  // User Page
-  createUser() async {
-    var response = 'error';
+
+  // Create User Page
+  createUser() async { 
+    // log(userNameCtrl.text);
+    // log(passwordCtrl.text);
+    // log(roleController.value);
     try {
       isLoading.value = true;
       var data = dio.FormData.fromMap({
-        'trans' : 'CREATE',
+        'trans' : 'NEW',
         'user_name' : userNameCtrl.text,
-        'user_password' : passwordCtrl.text
+        'user_password' : passwordCtrl.text,
+        'user_role' : roleController.value
       });
-      var res = await apiService.postData('/login.php', data);
-      if (res.statusCode == 200) {
+      var res = await apiService.postData('/user.php', data);
+      log(res.data.toString());
+      if (res.statusCode == 200) {   
         var dataObj = jsonDecode(res.data.toString());
-        if (dataObj['success'] == true) {
-          response = 'success';
-          log('login successful');
-          storage.write('userdata', dataObj['data']);
+        if (dataObj['data'] == 'exist') {
+          GblFn.showSnackbar("User", "Username is already exist.", 'error');
+        } else if (dataObj['data'] == 'success') {
+          Get.back();
+          GblFn.showSnackbar("User", "New user created successfuly.", 'success');
+        } else {
+          GblFn.showSnackbar("User", "Error encountered, please try again!", 'error');
         } 
       }
     } catch (e) {
       log(e.toString());
     } finally {
       isLoading.value = false;
-      if(response=='error'){
-          GblFn.showSnackbar(
-              "Login failed", "Your username or password is incorrect.", 'error');
-      } else {
-        GblFn.showSnackbar(
-            "Login Success", "Welcome.", 'success');
-        Get.toNamed(Routes.DASHBOARD);
-
-      }
     }
   }
 

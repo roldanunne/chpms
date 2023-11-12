@@ -1,9 +1,7 @@
-import 'dart:convert';
+import 'package:chpms/module_admin/user/controllers/user_ctrl.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:http/http.dart' as http;
-
-import '../controllers/user_ctrl.dart';
+import 'package:loading_overlay/loading_overlay.dart';
 
 
 
@@ -12,6 +10,7 @@ class UserPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+
     UserController ctrl = Get.find();
 
     ctrl.context = context;
@@ -24,22 +23,28 @@ class UserPage extends StatelessWidget {
           child: Text('User Management'),
         ),
       ),
-      body: Container(
-        color: Colors.lightBlue[100],
-        alignment: Alignment.center,
-        child: const Text(
-          'User Management',
-          textAlign: TextAlign.center,
-          style: TextStyle(
-            fontSize: 40,
-            fontStyle: FontStyle.italic,
-            fontWeight: FontWeight.bold,
+      body: Obx(() => LoadingOverlay(
+        isLoading: ctrl.isLoading.value,
+        opacity: 0.5,
+        progressIndicator: const CircularProgressIndicator(),
+        child: Container(
+          color: Colors.lightBlue[100],
+          alignment: Alignment.center,
+          child: const Text(
+            'User Management',
+            textAlign: TextAlign.center,
+            style: TextStyle(
+              fontSize: 40,
+              fontStyle: FontStyle.italic,
+              fontWeight: FontWeight.bold,
+            ),
           ),
         ),
       ),
+      ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-         ctrl. openDialog();
+         ctrl.openDialog();
         },
         tooltip: 'Create User',
         child: const Icon(Icons.add),

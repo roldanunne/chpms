@@ -27,7 +27,9 @@ class LoginController extends GetxController {
     loadInitialized();
   }
 
-  loadInitialized() async {}
+  loadInitialized() async {
+    
+  }
 
   // Login Page
   submitLogin() async {

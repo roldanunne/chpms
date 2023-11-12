@@ -1,6 +1,5 @@
+import 'package:chpms/module_admin/user/controllers/user_ctrl.dart';
 import 'package:get/get.dart';
-
-import '../controllers/user_ctrl.dart';
 
   
 class UserBinding extends Bindings {

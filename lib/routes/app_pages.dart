@@ -31,37 +31,37 @@ class AppPages {
     GetPage(
       name: Routes.DASHBOARD,
       page: () => const DashboardPage(),
-      binding: DashboardBinding(),
+      bindings: [DashboardBinding(), LoginBinding(),FrontDeskBinding(),MaintenanceBinding(),RoomBinding(),UserBinding()],
       transition: Transition.fadeIn,
     ),
     GetPage(
       name: Routes.HOME,
       page: () => const LoginPage(),
-      binding: LoginBinding(),
+      // binding: LoginBinding(),
       transition: Transition.fadeIn,
     ),
     GetPage(
       name: Routes.FRONTDESK,
       page: () => const FrontDeskPage(),
-      binding: FrontDeskBinding(),
+      // binding: FrontDeskBinding(),
       transition: Transition.fadeIn,
     ),
     GetPage(
       name: Routes.MAINTENANCE,
       page: () => const MaintenancePage(),
-      binding: MaintenanceBinding(),
+      // binding: MaintenanceBinding(),
       transition: Transition.fadeIn,
     ),
     GetPage(
       name: Routes.ROOM,
       page: () => const RoomPage(),
-      binding: RoomBinding(),
+      // binding: RoomBinding(),
       transition: Transition.fadeIn,
     ),
     GetPage(
       name: Routes.USER,
       page: () => const UserPage(),
-      binding: UserBinding(),
+      // binding: UserBinding(),
       transition: Transition.fadeIn,
     ),
   ];
